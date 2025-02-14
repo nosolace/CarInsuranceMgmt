@@ -79,13 +79,31 @@ public class Car implements Serializable {
         }
     }
 
-    public String getCarDetail() {
-        return String.format("%-17s: %s\n", "License plate", licensePlate)
-                + String.format("%-17s: %s\n", "Owner", owner)
-                + String.format("%-17s: %s\n", "Phone", phone)
-                + String.format("%-17s: %s\n", "Car brand", brand)
-                + String.format("%-17s: %,d\n", "Value of vehicle", valueOfVehicle)
-                + String.format("%-17s: %d\n", "Number of seats", numOfSeats)
-                + String.format("%-17s: %s", "Registration date", regDate);
+    public String getLicensePlate() {
+        return licensePlate;
+    }
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    public long getValueOfVehicle() {
+        return valueOfVehicle;
+    }
+
+    public Date getRegDate() {
+        return regDate;
+    }
+
+    public String getRegPlace() {
+        return regPlace;
     }
 }

@@ -19,69 +19,98 @@ import tools.ConsoleInputter;
  */
 public class CarList extends ArrayList<Car> {
 
-    public boolean carInList(String licensePlate) {
+    private static String licensePlate, owner, phone, brand;
+    private static long valueOfVehicle;
+    private static Date regDate;
+    private static int numOfSeats;
+
+    private String inputPlate() {
+        String errorMsg = "The first two characters are numbers in the range from 50 to 59.\n"
+                + "The next two characters include a character describing the district code.\n"
+                + "The last of five characters is numeric.";
+        return ConsoleInputter.getStr("Input license plate", Car.LICENSE_PLATE_FORMAT, errorMsg);
+    }
+
+    private String inputOwner() {
+        return ConsoleInputter.getStr("Input owner", Car.OWNER_NAME_FORMAT, "Length must be between 2 and 25 characters.");
+    }
+
+    private String inputPhone() {
+        return ConsoleInputter.getStr("Input phone", Car.PHONE_FORMAT, "Must contain exactly 10 digits and belong to a valid Vietnamese network operator");
+    }
+
+    private Date inputDate() {
+        return ConsoleInputter.getDate("Input Date", "dd/MM/yyyy");
+    }
+
+    private String inputBrand() {
+        return ConsoleInputter.getStr("Input brand", Car.BRAND_CAR_FORMAT, "Length must be between 5 and 12 characters");
+    }
+
+    private int inputSeats() {
+        return ConsoleInputter.getInt("Input number of seats", 4, 36);
+    }
+
+    private long inputValue() {
+        return ConsoleInputter.getLongInt("Input Value of Car", 1000, 100000000000L);
+    }
+
+    private boolean isCarInList(String licensePlate) {
         return this.indexOf(new Car(licensePlate)) >= 0;
     }
 
-    public Car getCar(String licensePlate) {
+    private Car getCar(String licensePlate) {
         return this.get(this.indexOf(new Car(licensePlate)));
     }
 
+    private String getCarDetail(String licensePlate) {
+        Car c = getCar(licensePlate);
+        return String.format("%-17s: %s\n", "License plate", c.getLicensePlate())
+                + String.format("%-17s: %s\n", "Owner", c.getOwner())
+                + String.format("%-17s: %s\n", "Phone", c.getPhone())
+                + String.format("%-17s: %s\n", "Car brand", c.getBrand())
+                + String.format("%-17s: %,d\n", "Value of vehicle", c.getValueOfVehicle())
+                + String.format("%-17s: %d\n", "Number of seats", c.getNumOfSeats())
+                + String.format("%-17s: %s", "Registration date", c.getRegDate());
+    }
+
     public void addCar() {
-        // Các biến lưu giá trị của car
-        String licensePlate, owner, phone, brand;
-        long valueOfVehicle;
-        Date regDate;
-        int numOfSeats;
         do {
-            // Nhập plate
-            licensePlate = ConsoleInputter.getStr("Input license plate", Car.LICENSE_PLATE_FORMAT, "");
-        } while (carInList(licensePlate)); // Nếu index > 0
-        // Nhập tên
-        owner = ConsoleInputter.getStr("Input owner", Car.OWNER_NAME_FORMAT, "");
-        // Nhập sđt
-        phone = ConsoleInputter.getStr("Input phone", Car.PHONE_FORMAT, "");
-        // Nhập brand
-        brand = ConsoleInputter.getStr("Input brand", Car.BRAND_CAR_FORMAT, "");
-        // Nhập giá trị, max 100 tỷ =))
-        valueOfVehicle = ConsoleInputter.getLongInt("Input Value of Car", 1000, 100000000000L);
-        // Nhập ngày
-        regDate = ConsoleInputter.getDate("Input Date", "dd/MM/yyyy");
-        // Nhập ghế
-        numOfSeats = ConsoleInputter.getInt("Input number of seats", 4, 36);
-        // Thêm car vào danh sách
+            licensePlate = inputPlate();
+            if (isCarInList(licensePlate)) {
+                System.out.println("This license plate has existed");
+            }
+        } while (isCarInList(licensePlate));
+        owner = inputOwner();
+        phone = inputPhone();
+        brand = inputBrand();
+        valueOfVehicle = inputValue();
+        regDate = inputDate();
+        numOfSeats = inputSeats();
         this.add(new Car(licensePlate, owner, phone, brand, valueOfVehicle, regDate, numOfSeats));
     }
 
-    //FindByPalate
     public void findByPlate() {
-        // Nhập plate
-        String licensePlate = ConsoleInputter.getStr("Input license plate", Car.LICENSE_PLATE_FORMAT, "");
-        // Kiểm tra
-        if (carInList(licensePlate)) {
+        licensePlate = inputPlate();
+        if (isCarInList(licensePlate)) {
             String seperator = "-----------------------------------------------------";
             System.out.println("Vehicle Details:");
             System.out.println(seperator);
-            System.out.println(getCar(licensePlate).getCarDetail());
+            System.out.println(getCarDetail(licensePlate));
             System.out.println(seperator);
         } else {
             System.out.println("No one matches the search criteria!");
         }
     }
 
-    //Update
     public void updateCarInfo() {
-        //Nhập plate
-        String licensePlate = ConsoleInputter.getStr("Input license plate", Car.LICENSE_PLATE_FORMAT, "");
-        // Kiểm tra
-        if (carInList(licensePlate)) {
-            String owner, phone, brand;
-            int numOfSeats;
-            owner = ConsoleInputter.updateStr("Input owner", Car.OWNER_NAME_FORMAT, "");
+        licensePlate = inputPlate();
+        if (isCarInList(licensePlate)) {
+            owner = ConsoleInputter.updateStr("Input owner", Car.OWNER_NAME_FORMAT, "Length must be between 2 and 25 characters");
             getCar(licensePlate).setOwner(owner);
-            phone = ConsoleInputter.updateStr("Input phone", Car.PHONE_FORMAT, "");
+            phone = ConsoleInputter.updateStr("Input phone", Car.PHONE_FORMAT, "Must contain exactly 10 digits and belong to a valid Vietnamese network operator");
             getCar(licensePlate).setPhone(phone);
-            brand = ConsoleInputter.updateStr("Input brand", Car.BRAND_CAR_FORMAT, "");
+            brand = ConsoleInputter.updateStr("Input brand", Car.BRAND_CAR_FORMAT, "Length must be between 5 and 12 characters");
             getCar(licensePlate).setBrand(brand);
             numOfSeats = ConsoleInputter.updateInt("Input number of seats", getCar(licensePlate).getNumOfSeats(), 4, 36);
             getCar(licensePlate).setNumOfSeats(numOfSeats);
@@ -91,13 +120,15 @@ public class CarList extends ArrayList<Car> {
         }
     }
 
-    //Delete
     public void delete() {
-        //Nhập plate
-        String licensePlate = ConsoleInputter.getStr("Input license plate", Car.LICENSE_PLATE_FORMAT, "");
-        // Kiểm tra
-        if (carInList(licensePlate)) {
-
+        licensePlate = inputPlate();
+        if (isCarInList(licensePlate)) {
+            System.out.println("Vehicle Details:");
+            System.out.println(getCarDetail(licensePlate));
+            boolean isDeleted = ConsoleInputter.getBoolean("Are you sure you want to delete this registration");
+            if (isDeleted) {
+                this.remove(getCar(licensePlate));
+            }
         } else {
             System.out.println("This vehicle does not exist.");
         }

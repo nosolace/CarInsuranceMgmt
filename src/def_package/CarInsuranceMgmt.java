@@ -15,9 +15,9 @@ import tools.ConsoleInputter;
 public class CarInsuranceMgmt {
 
     public static void main(String[] args) {
-        String carFile = "data/carInfo.dat";
-        CarList carList = new CarList();
-        carList.loadFromFile(carFile);
+        String carInfo = "data/carInfo.dat";
+        CarList cars = new CarList();
+        cars.loadFromFile(carInfo);
         int choice; //biến menu
         boolean isChanged = false; //biến "isChange" kiểm tra thông tin đăng ký có bị thay đổi hay không
         do {
@@ -28,22 +28,24 @@ public class CarInsuranceMgmt {
             switch (choice) {
                 case 1:
                     do {
-                        carList.addCar();
+                        cars.addCar();
                     } while (ConsoleInputter.getBoolean("Add new car"));
                     isChanged = true;
                     break;
                 case 2:
                     do {
-                        carList.findByPlate();
+                        cars.findByPlate();
                     } while (ConsoleInputter.getBoolean("Search another car"));
                     break;
                 case 3:
                     do {
-                        carList.updateCarInfo();
+                        cars.updateCarInfo();
                     } while (ConsoleInputter.getBoolean("Update another car"));
                     isChanged = true;
                     break;
                 case 4:
+                    cars.delete();
+                    isChanged = true;
                     break;
                 case 5:
                     break;
@@ -52,13 +54,13 @@ public class CarInsuranceMgmt {
                 case 7:
                     break;
                 case 8:
-                    carList.saveFile(carFile);
+                    cars.saveFile(carInfo);
+                    isChanged = false;
                     break;
                 case 9:
                     if (isChanged == true) {
-                        if (ConsoleInputter.getBoolean("Data changed. Save data to file.") == true) {
-                            carList.saveFile(carFile);
-                            //customerList.saveFile(customerData);
+                        if (ConsoleInputter.getBoolean("Do you want to save the changes before exiting") == true) {
+                            cars.saveFile(carInfo);
                         }
                         System.out.println("Good bye!");
                     }
