@@ -170,3 +170,6 @@ public class CarList extends ArrayList<Car> {
         }
     }
 }
+/*
+    Tôi không thể làm gì hơn với đoạn code này, vì nó đã quá gọn 
+ */

@@ -51,34 +51,6 @@ public class Car implements Serializable {
         return this.licensePlate.equals(c.licensePlate);
     }
 
-    public int getNumOfSeats() {
-        return numOfSeats;
-    }
-
-    public void setOwner(String owner) {
-        if (owner.matches(OWNER_NAME_FORMAT)) {
-            this.owner = owner;
-        }
-    }
-
-    public void setPhone(String phone) {
-        if (phone.matches(PHONE_FORMAT)) {
-            this.phone = phone;
-        }
-    }
-
-    public void setBrand(String brand) {
-        if (brand.matches(BRAND_CAR_FORMAT)) {
-            this.brand = brand.toUpperCase();
-        }
-    }
-
-    public void setNumOfSeats(int numOfSeats) {
-        if (4 <= numOfSeats && numOfSeats <= 36) {
-            this.numOfSeats = numOfSeats;
-        }
-    }
-
     public String getLicensePlate() {
         return licensePlate;
     }
@@ -105,5 +77,33 @@ public class Car implements Serializable {
 
     public String getRegPlace() {
         return regPlace;
+    }
+
+    public int getNumOfSeats() {
+        return numOfSeats;
+    }
+
+    public void setOwner(String owner) {
+        if (owner.matches(OWNER_NAME_FORMAT)) {
+            this.owner = owner;
+        }
+    }
+
+    public void setPhone(String phone) {
+        if (phone.matches(PHONE_FORMAT)) {
+            this.phone = phone;
+        }
+    }
+
+    public void setBrand(String brand) {
+        if (brand.matches(BRAND_CAR_FORMAT)) {
+            this.brand = brand.toUpperCase();
+        }
+    }
+
+    public void setNumOfSeats(int numOfSeats) {
+        if (4 <= numOfSeats && numOfSeats <= 36) {
+            this.numOfSeats = numOfSeats;
+        }
     }
 }
