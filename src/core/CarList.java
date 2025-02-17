@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import tools.ConsoleInputter;
 
@@ -19,12 +20,25 @@ import tools.ConsoleInputter;
  */
 public class CarList extends ArrayList<Car> {
 
+    private InsuranceList insurances;
+
+    public CarList(InsuranceList insurances) {
+        this.insurances = insurances;
+    }
+
+    public CarList() {
+    }
+
+    public void setInsurances(InsuranceList insurances) {
+        this.insurances = insurances;
+    }
+
     private static String licensePlate, owner, phone, brand;
     private static long valueOfVehicle;
-    private static Date regDate;
+    private static String regDate;
     private static int numOfSeats;
 
-    private String inputPlate() {
+    protected String inputPlate() {
         String errorMsg = "The first two characters are numbers in the range from 50 to 59.\n"
                 + "The next two characters include a character describing the district code.\n"
                 + "The last of five characters is numeric.";
@@ -39,8 +53,12 @@ public class CarList extends ArrayList<Car> {
         return ConsoleInputter.getStr("Input phone", Car.PHONE_FORMAT, "Must contain exactly 10 digits and belong to a valid Vietnamese network operator");
     }
 
-    private Date inputDate() {
-        return ConsoleInputter.getDate("Input Date", "dd/MM/yyyy");
+    private String inputDate() {
+        Date d;
+        do {
+            d = ConsoleInputter.getDate("Input Date", "dd/MM/yyyy");
+        } while (d.after(new java.util.Date()));
+        return ConsoleInputter.dateStr(d, "dd/MM/yyyy");
     }
 
     private String inputBrand() {
@@ -55,11 +73,11 @@ public class CarList extends ArrayList<Car> {
         return ConsoleInputter.getLongInt("Input Value of Car", 1000, 100000000000L);
     }
 
-    private boolean isCarInList(String licensePlate) {
+    protected boolean isCarInList(String licensePlate) {
         return this.indexOf(new Car(licensePlate)) >= 0;
     }
 
-    private Car getCar(String licensePlate) {
+    protected Car getCar(String licensePlate) {
         return this.get(this.indexOf(new Car(licensePlate)));
     }
 
@@ -123,14 +141,68 @@ public class CarList extends ArrayList<Car> {
     public void delete() {
         licensePlate = inputPlate();
         if (isCarInList(licensePlate)) {
-            System.out.println("Vehicle Details:");
-            System.out.println(getCarDetail(licensePlate));
-            boolean isDeleted = ConsoleInputter.getBoolean("Are you sure you want to delete this registration");
-            if (isDeleted) {
-                this.remove(getCar(licensePlate));
+            if (!insurances.isInList(licensePlate)) {
+                System.out.println("Vehicle Details:");
+                System.out.println(getCarDetail(licensePlate));
+                if (ConsoleInputter.getBoolean("Are you sure you want to delete this registration")) {
+                    this.remove(getCar(licensePlate));
+                    System.out.println("The vehicle information has been succesfully deleted");
+                }
+            } else {
+                System.out.println("This vehicle has been registed for insurance");
             }
         } else {
-            System.out.println("This vehicle does not exist.");
+            System.out.println("This vehicle has not registered yet");
+        }
+    }
+
+    public void printUninsuredCar() {
+        if (insurances != null) {
+            CarList uninsuredCars = new CarList();
+            for (Car c : this) {
+                if (!insurances.isInList(c.getLicensePlate())) {
+                    uninsuredCars.add(c);
+                }
+            }
+            if (!uninsuredCars.isEmpty()) {
+                Collections.sort(uninsuredCars);
+                String seperator = "----------------------------------------"
+                        + "------------------------------------------------";
+                System.out.println(seperator);
+                System.out.println("Report: UNINSURED CARS");
+                System.out.println("Sorted by: Vehicle Type");
+                System.out.println("Sort type: DESC");
+                System.out.println(seperator);
+                System.out.printf("%-4s| %-10s| %-11s|%-18s| %-10s| %-11s| %7s%n",
+                        "No.", "Li. plate", "Reg. Date", "Ve. Owner", "Brand", "Num. Seats", "Value");
+                System.out.println(seperator);
+                for (Car c : uninsuredCars) {
+                    System.out.printf("%-4s| %-10s| %-11s|%-18s| %-10s| %-11s| %,7d%n",
+                            uninsuredCars.indexOf(c) + 1, c.getLicensePlate(), c.getRegDate(), c.getOwner(),
+                            c.getBrand(), c.getNumOfSeats(), c.getValueOfVehicle());
+                }
+                System.out.println(seperator);
+            } else {
+                System.out.println("No information available");
+            }
+        } else {
+            Collections.sort(this);
+            String seperator = "----------------------------------------"
+                    + "------------------------------------------------";
+            System.out.println(seperator);
+            System.out.println("Report: UNINSURED CARS");
+            System.out.println("Sorted by: Vehicle Type");
+            System.out.println("Sort type: DESC");
+            System.out.println(seperator);
+            System.out.printf("%-4s| %-10s| %-11s|%-18s| %-10s| %-11s| %7s%n",
+                    "No.", "Li. plate", "Reg. Date", "Ve. Owner", "Brand", "Num. Seats", "Value");
+            System.out.println(seperator);
+            for (Car c : this) {
+                System.out.printf("%-4s| %-10s| %-11s|%-18s| %-10s| %-11s| %,7d%n",
+                        this.indexOf(c) + 1, c.getLicensePlate(), c.getRegDate(), c.getOwner(),
+                        c.getBrand(), c.getNumOfSeats(), c.getValueOfVehicle());
+            }
+            System.out.println(seperator);
         }
     }
 
@@ -170,6 +242,3 @@ public class CarList extends ArrayList<Car> {
         }
     }
 }
-/*
-    Tôi không thể làm gì hơn với đoạn code này, vì nó đã quá gọn 
- */

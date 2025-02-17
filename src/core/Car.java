@@ -4,14 +4,13 @@
 package core;
 
 import java.io.Serializable;
-import java.util.Date;
 import tools.ConsoleInputter;
 
 /**
  *
  * @author no-solace
  */
-public class Car implements Serializable {
+public class Car implements Serializable, Comparable<Car> {
 
     public static final String LICENSE_PLATE_FORMAT
             = "^5[0-9](X[1-4B]|T[12A]|F[12A]|C[13A]|H[12A]|K[12A]|"
@@ -26,11 +25,11 @@ public class Car implements Serializable {
     private String phone;
     private String brand;
     private long valueOfVehicle;
-    private Date regDate;
+    private String regDate;
     private String regPlace;
     private int numOfSeats;
 
-    public Car(String licensePlate, String owner, String phone, String brand, long valueOfVehicle, Date regDate, int numOfSeats) {
+    public Car(String licensePlate, String owner, String phone, String brand, long valueOfVehicle, String regDate, int numOfSeats) {
         this.licensePlate = licensePlate;
         this.owner = owner;
         this.phone = phone;
@@ -71,7 +70,7 @@ public class Car implements Serializable {
         return valueOfVehicle;
     }
 
-    public Date getRegDate() {
+    public String getRegDate() {
         return regDate;
     }
 
@@ -105,5 +104,10 @@ public class Car implements Serializable {
         if (4 <= numOfSeats && numOfSeats <= 36) {
             this.numOfSeats = numOfSeats;
         }
+    }
+
+    @Override
+    public int compareTo(Car o) {
+        return Long.compare(this.valueOfVehicle, o.valueOfVehicle);
     }
 }

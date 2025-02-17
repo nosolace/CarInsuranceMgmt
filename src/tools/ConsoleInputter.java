@@ -127,6 +127,11 @@ public class ConsoleInputter {
         return d;
     }
 
+    public static String dateStr(Date date, String dateFormat) {
+        DateFormat formatter = new SimpleDateFormat(dateFormat);
+        return (date == null) ? null : formatter.format(date);
+    }
+
     public static String getDistrict(char c) {
         Map<Character, String> district = new HashMap<>();
         String[] districts = {"Thu Duc", "District 1", "District 3", "District 4", "District 5",
