@@ -29,9 +29,9 @@ public class InsuranceList extends ArrayList<Insurance> {
         this.cars = cars;
     }
     
-    public void setCars(CarList cars) {
-        this.cars = cars;
-    }
+//    public void setCars(CarList cars) {
+//        this.cars = cars;
+//    }
     
     private static String id, licensePlate, startDate, beneficiary;
     private static int period;
