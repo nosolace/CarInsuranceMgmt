@@ -13,9 +13,9 @@ import tools.ConsoleInputter;
 public class Car implements Serializable, Comparable<Car> {
 
     public static final String LICENSE_PLATE_FORMAT
-            = "^5[0-9](X[1-4B]|T[12A]|F[12A]|C[13A]|H[12A]|K[12A]|"
-            + "C[24B]|L[12A]|U[12A]|M[12A]|G[12A]|D[123A]|E[12A]|"
-            + "N[13A]|P[12A]|S[123A]|V[123A]|Y[123B]|Z[12A]|N[23B])[0-9]{5}$";
+            = "^5[0-9](x[1-4b]|t[12a]|f[12A]|c[13A]|h[12A]|k[12A]|"
+            + "c[24B]|l[12A]|u[12A]|m[12A]|g[12A]|d[123A]|e[12A]|"
+            + "n[13A]|p[12A]|s[123A]|v[123A]|y[123B]|z[12A]|n[23B])[0-9]{5}$";
     public static final String OWNER_NAME_FORMAT = "^[A-Za-z ]{2,25}";
     public static final String PHONE_FORMAT = "0[1-9][0-9]{8}";
     public static final String BRAND_CAR_FORMAT = "[A-Za-z]{5,12}";
@@ -30,7 +30,7 @@ public class Car implements Serializable, Comparable<Car> {
     private int numOfSeats;
 
     public Car(String licensePlate, String owner, String phone, String brand, long valueOfVehicle, String regDate, int numOfSeats) {
-        this.licensePlate = licensePlate;
+        this.licensePlate = licensePlate.toUpperCase();
         this.owner = owner;
         this.phone = phone;
         this.brand = brand.toUpperCase();

@@ -173,11 +173,11 @@ public class CarList extends ArrayList<Car> {
                 System.out.println("Sorted by: Vehicle Type");
                 System.out.println("Sort type: DESC");
                 System.out.println(seperator);
-                System.out.printf("%-4s| %-10s| %-11s|%-18s| %-10s| %-11s| %7s%n",
+                System.out.printf("%-4s| %-10s| %-11s| %-19s| %-10s| %-11s| %-7s%n",
                         "No.", "Li. plate", "Reg. Date", "Ve. Owner", "Brand", "Num. Seats", "Value");
                 System.out.println(seperator);
                 for (Car c : uninsuredCars) {
-                    System.out.printf("%-4s| %-10s| %-11s|%-18s| %-10s| %-11s| %,7d%n",
+                    System.out.printf("%-4s| %-10s| %-11s| %-19s| %-10s| %-11s| %,7d%n",
                             uninsuredCars.indexOf(c) + 1, c.getLicensePlate(), c.getRegDate(), c.getOwner(),
                             c.getBrand(), c.getNumOfSeats(), c.getValueOfVehicle());
                 }

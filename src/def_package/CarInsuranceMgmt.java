@@ -60,6 +60,7 @@ public class CarInsuranceMgmt {
                     do {
                         iList.addInsurance();
                     } while (ConsoleInputter.getBoolean("Add another insurance"));
+                    isChanged = true;
                     break;
                 case 6:
                     do {
